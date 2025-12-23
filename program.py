@@ -3,7 +3,7 @@ import random
 import time
 import matplotlib.pyplot as plt
 import sys
-sys.setrecursionlimit(2000)
+sys.setrecursionlimit(10000)
 from prettytable import PrettyTable
 
 def selection_sort_iterative(arr):

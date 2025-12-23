@@ -56,7 +56,7 @@ st.title("Analisis Kompleksitas Algoritma Selection Sort")
 st.write("Kelompok Mihu Mihu - S1IF-12-01 - 103112400259 | 103112430001 | 103112430017")
 
 dataset_size_small = st.slider("Ukuran Dataset Kecil (0-500)", 0, 500, 100)
-dataset_size_large = st.slider("Ukuran Dataset Besar (0-10000)", 0, 1000, 100)
+dataset_size_large = st.slider("Ukuran Dataset Besar (0-10000)", 0, 10000, 100)
 
 n_values = []
 recursive_times = []

@@ -81,10 +81,10 @@ if st.button("Mulai Analisis"):
     iterative_times.append(small_iterative_time)
     iterative_times.append(large_iterative_time)
 
-    st.write(f"Waktu eksekusi untuk dataset kecil (Rekursif): {small_recursive_time:.6f} detik")
-    st.write(f"Waktu eksekusi untuk dataset besar (Rekursif): {large_recursive_time:.6f} detik")
-    st.write(f"Waktu eksekusi untuk dataset kecil (Iteratif): {small_iterative_time:.6f} detik")
-    st.write(f"Waktu eksekusi untuk dataset besar (Iteratif): {large_iterative_time:.6f} detik")
+    # st.write(f"Waktu eksekusi untuk dataset kecil (Rekursif): {small_recursive_time:.6f} detik")
+    # st.write(f"Waktu eksekusi untuk dataset besar (Rekursif): {large_recursive_time:.6f} detik")
+    # st.write(f"Waktu eksekusi untuk dataset kecil (Iteratif): {small_iterative_time:.6f} detik")
+    # st.write(f"Waktu eksekusi untuk dataset besar (Iteratif): {large_iterative_time:.6f} detik")
 
     print_execution_table(n_values, recursive_times, iterative_times)
     update_graph(n_values, recursive_times, iterative_times)

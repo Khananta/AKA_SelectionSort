@@ -13,9 +13,25 @@ def selection_sort(arr):
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
 
-def measure_execution_time(arr):
+def measure_time_iterative(arr):
     start_time = time.time()
     selection_sort(arr)
+    return time.time() - start_time
+
+def selection_sort_recursive(arr, i=0):
+    n = len(arr)
+    if i >= n - 1:
+        return
+    min_idx = i
+    for j in range(i + 1, n):
+        if arr[j] < arr[min_idx]:
+            min_idx = j
+    arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    selection_sort_recursive(arr, i + 1)
+
+def measure_time_recursive(arr):
+    start_time = time.time()
+    selection_sort_recursive(arr)
     return time.time() - start_time
 
 def print_execution_table(n_values, recursive_times, iterative_times):
@@ -31,7 +47,7 @@ def update_graph(n_values, recursive_times, iterative_times):
     plt.plot(n_values, recursive_times, label='Recursive', marker='o', linestyle='-', color='blue')
     plt.plot(n_values, iterative_times, label='Iterative', marker='o', linestyle='-', color='orange')
     plt.title('Performance Comparison: Recursive vs Iterative')
-    plt.xlabel('Input (n)')
+    plt.xlabel('Input Size (n)')
     plt.ylabel('Execution Time (seconds)')
     plt.legend()
     plt.grid(True)
@@ -51,19 +67,20 @@ if st.button("Mulai Analisis"):
     small_dataset = [random.randint(1, 100) for _ in range(dataset_size_small)]
     large_dataset = [random.randint(1, 1000) for _ in range(dataset_size_large)]
 
-    small_time = measure_execution_time(small_dataset)
-    large_time = measure_execution_time(large_dataset)
+    small_recursive = measure_time_recursive(small_dataset.copy())
+    large_recursive = measure_time_recursive(large_dataset.copy())
 
-    n_values.append(dataset_size_small)
-    n_values.append(dataset_size_large)
-    recursive_times.append(small_time)
-    recursive_times.append(large_time)
-    iterative_times.append(small_time) 
-    iterative_times.append(large_time) 
+    small_iterative = measure_time_iterative(small_dataset.copy())
+    large_iterative = measure_time_iterative(large_dataset.copy())
 
-    st.write(f"Waktu eksekusi untuk dataset kecil: {small_time:.6f} detik")
-    st.write(f"Waktu eksekusi untuk dataset besar: {large_time:.6f} detik")
+    n_values.extend([dataset_size_small, dataset_size_large])
+    recursive_times.extend([small_recursive, large_recursive])
+    iterative_times.extend([small_iterative, large_iterative])
+
+    st.write(f"Waktu eksekusi recursive (dataset kecil): {small_recursive:.6f} detik")
+    st.write(f"Waktu eksekusi recursive (dataset besar): {large_recursive:.6f} detik")
+    st.write(f"Waktu eksekusi iterative (dataset kecil): {small_iterative:.6f} detik")
+    st.write(f"Waktu eksekusi iterative (dataset besar): {large_iterative:.6f} detik")
 
     print_execution_table(n_values, recursive_times, iterative_times)
-
     update_graph(n_values, recursive_times, iterative_times)

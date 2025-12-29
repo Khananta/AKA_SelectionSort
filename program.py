@@ -43,8 +43,8 @@ def print_execution_table(n_values, recursive_times, iterative_times):
 
 def update_graph(n_values, recursive_times, iterative_times):
     plt.figure(figsize=(8, 6))
-    plt.plot(n_values, recursive_times, label='Recursive', marker='o', linestyle='-', color='blue')
-    plt.plot(n_values, iterative_times, label='Iterative', marker='o', linestyle='-', color='orange')
+    plt.plot(n_values, recursive_times, label='Recursive', marker='o')
+    plt.plot(n_values, iterative_times, label='Iterative', marker='o')
     plt.title('Performance of Recursive vs Iterative Selection Sort')
     plt.xlabel('Input Size (n)')
     plt.ylabel('Execution Time (seconds)')
@@ -55,8 +55,11 @@ def update_graph(n_values, recursive_times, iterative_times):
 st.title("Analisis Kompleksitas Algoritma Selection Sort")
 st.write("Kelompok Mihu Mihu - S1IF-12-01 - 103112400259 | 103112430001 | 103112430017")
 
-dataset_size_small = st.slider("Ukuran Dataset Kecil (0-500)", 0, 500, 100)
-dataset_size_large = st.slider("Ukuran Dataset Besar (0-1000)", 0, 1000, 100)
+sample_sizes = st.multiselect(
+    "Pilih Ukuran Dataset (direkomendasikan: 50 - 1000)",
+    [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
+    default=[100, 300, 500, 700, 1000]
+)
 
 n_values = []
 recursive_times = []
@@ -64,27 +67,11 @@ iterative_times = []
 
 if st.button("Mulai Analisis"):
 
-    small_dataset = [random.randint(1, 100) for _ in range(dataset_size_small)]
-    large_dataset = [random.randint(1, 1000) for _ in range(dataset_size_large)]
-
-    # FIX: Jika dataset = 0 → waktu eksekusi = 0.0
-    small_recursive_time = 0.0 if dataset_size_small == 0 else measure_execution_time(selection_sort_recursive, small_dataset.copy())
-    large_recursive_time = 0.0 if dataset_size_large == 0 else measure_execution_time(selection_sort_recursive, large_dataset.copy())
-
-    small_iterative_time = 0.0 if dataset_size_small == 0 else measure_execution_time(selection_sort_iterative, small_dataset.copy())
-    large_iterative_time = 0.0 if dataset_size_large == 0 else measure_execution_time(selection_sort_iterative, large_dataset.copy())
-
-    n_values.append(dataset_size_small)
-    n_values.append(dataset_size_large)
-    recursive_times.append(small_recursive_time)
-    recursive_times.append(large_recursive_time)
-    iterative_times.append(small_iterative_time)
-    iterative_times.append(large_iterative_time)
-
-    # st.write(f"Waktu eksekusi untuk dataset kecil (Rekursif): {small_recursive_time:.6f} detik")
-    # st.write(f"Waktu eksekusi untuk dataset besar (Rekursif): {large_recursive_time:.6f} detik")
-    # st.write(f"Waktu eksekusi untuk dataset kecil (Iteratif): {small_iterative_time:.6f} detik")
-    # st.write(f"Waktu eksekusi untuk dataset besar (Iteratif): {large_iterative_time:.6f} detik")
+    for n in sample_sizes:
+        data = [random.randint(1, 1000) for _ in range(n)]
+        recursive_times.append(measure_execution_time(selection_sort_recursive, data.copy()))
+        iterative_times.append(measure_execution_time(selection_sort_iterative, data.copy()))
+        n_values.append(n)
 
     print_execution_table(n_values, recursive_times, iterative_times)
     update_graph(n_values, recursive_times, iterative_times)

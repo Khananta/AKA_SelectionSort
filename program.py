@@ -36,8 +36,7 @@ def measure_execution_time(func, arr):
 def print_execution_table(n_values, recursive_times, iterative_times):
     table = PrettyTable()
     table.field_names = ["n", "Recursive Time (s)", "Iterative Time (s)"]
-    min_len = min(len(n_values), len(recursive_times), len(iterative_times))
-    for i in range(min_len):
+    for i in range(len(n_values)):
         table.add_row([n_values[i], recursive_times[i], iterative_times[i]])
     st.text(str(table))
 
@@ -55,23 +54,24 @@ def update_graph(n_values, recursive_times, iterative_times):
 st.title("Analisis Kompleksitas Algoritma Selection Sort")
 st.write("Kelompok Mihu Mihu - S1IF-12-01 - 103112400259 | 103112430001 | 103112430017")
 
-sample_sizes = st.multiselect(
-    "Pilih Ukuran Dataset (direkomendasikan: 50 - 1000)",
-    [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
-    default=[100, 300, 500, 700, 1000]
-)
+input_sizes = st.text_input("Masukkan ukuran dataset (pisahkan dengan koma). Contoh: 10, 50, 120, 300")
 
 n_values = []
 recursive_times = []
 iterative_times = []
 
 if st.button("Mulai Analisis"):
+    try:
+        sizes = [int(x.strip()) for x in input_sizes.split(",") if x.strip().isdigit()]
+        
+        for n in sizes:
+            data = [random.randint(1, 1000) for _ in range(n)]
+            recursive_times.append(measure_execution_time(selection_sort_recursive, data.copy()))
+            iterative_times.append(measure_execution_time(selection_sort_iterative, data.copy()))
+            n_values.append(n)
 
-    for n in sample_sizes:
-        data = [random.randint(1, 1000) for _ in range(n)]
-        recursive_times.append(measure_execution_time(selection_sort_recursive, data.copy()))
-        iterative_times.append(measure_execution_time(selection_sort_iterative, data.copy()))
-        n_values.append(n)
+        print_execution_table(n_values, recursive_times, iterative_times)
+        update_graph(n_values, recursive_times, iterative_times)
 
-    print_execution_table(n_values, recursive_times, iterative_times)
-    update_graph(n_values, recursive_times, iterative_times)
+    except:
+        st.error("Input tidak valid. Masukkan angka dipisahkan koma.")
